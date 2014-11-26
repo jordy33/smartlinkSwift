@@ -8,19 +8,15 @@
 
 import UIKit
 import CoreData
-class settingsViewController: UIViewController, UITextFieldDelegate , NSURLConnectionDelegate, NSXMLParserDelegate {
+class settingsViewController: UIViewController, UITextFieldDelegate {
+
     var myData = [NSManagedObject]()
-    var mutableData:NSMutableData  = NSMutableData.alloc()
-    var currentElementName:NSString = ""
-    var resultData : String = ""
-    
+
     @IBOutlet weak var urlTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
     @IBOutlet weak var commandTextField: UITextField!
     @IBOutlet weak var textViewResults: UITextView!
     
-   
-
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = parameterRetrieve("url")
@@ -48,7 +44,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate , NSURLConne
         var request = HTTPTask()
 //        request.requestSerializer = JSONRequestSerializer()
         request.responseSerializer = JSONResponseSerializer()
-        request.GET("http://192.1.1.27/greeting", parameters: nil, success: {(response: HTTPResponse) in
+        request.GET(urlTextField.text + "greeting", parameters: nil, success: {(response: HTTPResponse) in
                  if let dict = response.responseObject as? Dictionary<String,AnyObject> {
                     let myresult = dict["id"] as String
                     println("print the whole response: \(myresult)")
@@ -59,30 +55,29 @@ class settingsViewController: UIViewController, UITextFieldDelegate , NSURLConne
                     }
             }
             },failure: {(error: NSError, response: HTTPResponse?) in
-                println("error: \(error)")
+                //println("error: \(error)")
+                // Error
+                let alertController = UIAlertController(title: "Error", message:
+                    "No connection", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
         })
     }
 
     @IBAction func sendButtonTapped(sender: UIButton) {
-        var soapMessage = "" //commandTextField.text
-        var urlString = "http://192.1.1.27/greeting"
-        var url = NSURL(string: urlString)
-        var theRequest = NSMutableURLRequest(URL: url!)
-        var msgLength = String(countElements(soapMessage))
+        // Enabling notifications
+        // 192.1.1.27/gatt/nodes/1/characteristics/handle/23/value
+        var request = HTTPTask()
+        //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
+        let params: Dictionary<String,AnyObject> = ["param": "param1", "array": ["first array element","second","third"], "num": 23, "dict": ["someKey": "someVal"]]
+        request.POST("http://domain.com/create", parameters: params, success: {(response: HTTPResponse) in
+            
+            },failure: {(error: NSError, response: HTTPResponse?) in
+                
+        })
         
-        theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        theRequest.addValue(msgLength, forHTTPHeaderField: "Content-Length")
-        theRequest.HTTPMethod = "GET"
-        theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) // or false
-        
-        var connection = NSURLConnection(request: theRequest, delegate: self, startImmediately: true)
-        connection?.start()
-        
-        if (connection == true) {
-            var mutableData : Void = NSMutableData.initialize()
-        }
-
     }
+
     func parameterInsert(id: String, myValue: String){
         urlTextField.resignFirstResponder()
         portTextField.resignFirstResponder()
@@ -149,64 +144,6 @@ class settingsViewController: UIViewController, UITextFieldDelegate , NSURLConne
             }
         return returnString
      }
-    // NSURL Connection Delegate
-    func connection(connection: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
-        mutableData.length = 0;
-    }
-    
-    func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
-        mutableData.appendData(data)
-    }
-    func connectionDidFinishLoading(connection: NSURLConnection!) {
-        println("Received info")
-        var jsonResult: NSDictionary = NSJSONSerialization.JSONObjectWithData(mutableData, options:    NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
-        
-        println(jsonResult.count)
-        println(jsonResult.objectForKey("id"))
-        var myresults: String = jsonResult.objectForKey("id") as String
-        textViewResults.text=textViewResults.text+myresults+"\r\n"
-    
-//        println(mutableData)
-//        var xmlParser = NSXMLParser(data: mutableData)
-//        xmlParser.delegate = self
-//        xmlParser.parse()
-//        xmlParser.shouldResolveExternalEntities = true
-        
-    }
-    
-    
-    // NSXMLParserDelegate
-    
-    func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!, attributes attributeDict: NSDictionary!) {
-        currentElementName = elementName
-        println("parser delegate")
-    }
-    
-    
-    func parser(parser: NSXMLParser!, foundCharacters string: String!) {
-        println("parser")
-        if currentElementName == "id" {
-            println ("lectura: \(string)")
-        }
-    }
-
-
  }
 
-//var soapMessage = "" //commandTextField.text
-//var urlString = "http://192.1.1.27/greeting"
-//var url = NSURL(string: urlString)
-//var theRequest = NSMutableURLRequest(URL: url!)
-//var msgLength = String(countElements(soapMessage))
-//
-//theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-//theRequest.addValue(msgLength, forHTTPHeaderField: "Content-Length")
-//theRequest.HTTPMethod = "GET"
-//theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) // or false
-//
-//var connection = NSURLConnection(request: theRequest, delegate: self, startImmediately: true)
-//connection?.start()
-//
-//if (connection == true) {
-//    var mutableData : Void = NSMutableData.initialize()
-//}
+

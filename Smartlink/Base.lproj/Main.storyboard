@@ -29,10 +29,10 @@
             </objects>
             <point key="canvasLocation" x="1362" y="478"/>
         </scene>
-        <!--settings-->
+        <!--Settings-->
         <scene sceneID="8Bk-Wc-zqB">
             <objects>
-                <viewController title="settings" id="TMt-uL-dvr" customClass="settingsViewController" customModule="Smartlink" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Settings" id="TMt-uL-dvr" customClass="settingsViewController" customModule="Smartlink" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yBy-14-lpI"/>
                         <viewControllerLayoutGuide type="bottom" id="BQg-RL-cJ6"/>
@@ -116,7 +116,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="21" y="379" width="230" height="129"/>
+                                    <rect key="frame" x="21" y="379" width="230" height="153"/>
                                 </variation>
                             </textView>
                         </subviews>
