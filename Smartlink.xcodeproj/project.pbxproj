@@ -14,6 +14,11 @@
 		879A54731A23D7840043335F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 879A54721A23D7840043335F /* Images.xcassets */; };
 		879A54761A23D7840043335F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879A54741A23D7840043335F /* LaunchScreen.xib */; };
 		879A54821A23D7850043335F /* SmartlinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A54811A23D7850043335F /* SmartlinkTests.swift */; };
+		879A548C1A23F60B0043335F /* settingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A548B1A23F60B0043335F /* settingsViewController.swift */; };
+		879B6C621A2634B50043E8E1 /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879B6C611A2634B50043E8E1 /* HTTPTask.swift */; };
+		879B6C641A26354F0043E8E1 /* HTTPRequestSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879B6C631A26354F0043E8E1 /* HTTPRequestSerializer.swift */; };
+		879B6C661A2635980043E8E1 /* HTTPResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879B6C651A2635980043E8E1 /* HTTPResponseSerializer.swift */; };
+		879B6C681A2635F70043E8E1 /* HTTPUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879B6C671A2635F70043E8E1 /* HTTPUpload.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,11 @@
 		879A547B1A23D7850043335F /* SmartlinkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartlinkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		879A54801A23D7850043335F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		879A54811A23D7850043335F /* SmartlinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartlinkTests.swift; sourceTree = "<group>"; };
+		879A548B1A23F60B0043335F /* settingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = settingsViewController.swift; sourceTree = "<group>"; };
+		879B6C611A2634B50043E8E1 /* HTTPTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPTask.swift; sourceTree = "<group>"; };
+		879B6C631A26354F0043E8E1 /* HTTPRequestSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestSerializer.swift; sourceTree = "<group>"; };
+		879B6C651A2635980043E8E1 /* HTTPResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPResponseSerializer.swift; sourceTree = "<group>"; };
+		879B6C671A2635F70043E8E1 /* HTTPUpload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPUpload.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +90,12 @@
 			isa = PBXGroup;
 			children = (
 				879A54681A23D7840043335F /* AppDelegate.swift */,
+				879B6C611A2634B50043E8E1 /* HTTPTask.swift */,
+				879B6C671A2635F70043E8E1 /* HTTPUpload.swift */,
+				879B6C651A2635980043E8E1 /* HTTPResponseSerializer.swift */,
+				879B6C631A26354F0043E8E1 /* HTTPRequestSerializer.swift */,
 				879A546D1A23D7840043335F /* ViewController.swift */,
+				879A548B1A23F60B0043335F /* settingsViewController.swift */,
 				879A546F1A23D7840043335F /* Main.storyboard */,
 				879A54721A23D7840043335F /* Images.xcassets */,
 				879A54741A23D7840043335F /* LaunchScreen.xib */,
@@ -215,9 +230,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				879B6C681A2635F70043E8E1 /* HTTPUpload.swift in Sources */,
 				879A546E1A23D7840043335F /* ViewController.swift in Sources */,
+				879B6C621A2634B50043E8E1 /* HTTPTask.swift in Sources */,
 				879A54691A23D7840043335F /* AppDelegate.swift in Sources */,
+				879B6C641A26354F0043E8E1 /* HTTPRequestSerializer.swift in Sources */,
 				879A546C1A23D7840043335F /* Smartlink.xcdatamodeld in Sources */,
+				879A548C1A23F60B0043335F /* settingsViewController.swift in Sources */,
+				879B6C661A2635980043E8E1 /* HTTPResponseSerializer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +429,7 @@
 				879A54871A23D7850043335F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		879A54881A23D7850043335F /* Build configuration list for PBXNativeTarget "SmartlinkTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +438,7 @@
 				879A548A1A23D7850043335F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
