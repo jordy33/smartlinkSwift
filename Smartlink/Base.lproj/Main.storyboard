@@ -76,6 +76,9 @@
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="21" y="285" width="230" height="30"/>
                                 </variation>
+                                <connections>
+                                    <action selector="hideKeyboard:" destination="TMt-uL-dvr" eventType="editingDidEndOnExit" id="Cj1-iv-TcM"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LRD-4B-1nK">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -116,7 +119,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="21" y="379" width="230" height="153"/>
+                                    <rect key="frame" x="16" y="355" width="230" height="150"/>
                                 </variation>
                             </textView>
                         </subviews>

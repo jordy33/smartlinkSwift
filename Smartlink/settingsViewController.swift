@@ -25,9 +25,13 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    @IBAction func hideKeyboard(sender: AnyObject) {
+                commandTextField.resignFirstResponder()
+    }
     func textFieldShouldReturn(textField: UITextField!) -> Bool {   //delegate method
         urlTextField.resignFirstResponder()
         portTextField.resignFirstResponder()
+
         return true
     }
     @IBAction func saveButtonTapped(sender: UIButton) {
@@ -47,7 +51,6 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         request.GET(urlTextField.text + "greeting", parameters: nil, success: {(response: HTTPResponse) in
                  if let dict = response.responseObject as? Dictionary<String,AnyObject> {
                     let myresult = dict["id"] as String
-                    println("print the whole response: \(myresult)")
                     //Apple will only let you modify UI components on the main event loop
                     // If you do not know if you are on the main thread, you can check it out by doing NSThread.isMainThread()
                     dispatch_sync(dispatch_get_main_queue()) {
@@ -69,15 +72,77 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         // 192.1.1.27/gatt/nodes/1/characteristics/handle/23/value
         var request = HTTPTask()
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
-        let params: Dictionary<String,AnyObject> = ["param": "param1", "array": ["first array element","second","third"], "num": 23, "dict": ["someKey": "someVal"]]
-        request.POST("http://domain.com/create", parameters: params, success: {(response: HTTPResponse) in
-            
+        let params: Dictionary<String,AnyObject> = ["data": "AQA="]
+        request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/21/value", parameters: params, success: {(response: HTTPResponse) in
+            dispatch_sync(dispatch_get_main_queue()) {
+                self.textViewResults.text=self.textViewResults.text + "notification enabled"+"\r\n"
+                var res = self.executeCommand(self.commandTextField.text)
+             }
             },failure: {(error: NSError, response: HTTPResponse?) in
-                
+                println("error: \(error)")
+                let alertController = UIAlertController(title: "Error", message:
+                    "No connection", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         })
         
     }
+    
+    func executeCommand(cmd: String) -> Bool {
+        var eval = false
+        var request = HTTPTask()
+        //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
+        let params: Dictionary<String,AnyObject> = ["data": convertStringToBase64(cmd)]
+        request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/23/value", parameters: params, success: {(response: HTTPResponse) in
+            dispatch_sync(dispatch_get_main_queue()) {
+                self.retrieveResponse()
+                eval = true
+            }
+            },failure: {(error: NSError, response: HTTPResponse?) in
+                println("error: \(error)")
+                let alertController = UIAlertController(title: "Error", message:
+                    "No connection", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+        })
+        return eval
+    }
+    
+    func retrieveResponse() {
+        var request = HTTPTask()
+        request.responseSerializer = JSONResponseSerializer()
+        request.GET(urlTextField.text + "gatt/nodes/1/characteristics/handle/19", parameters: nil, success: {(response: HTTPResponse) in
+            if let dict = response.responseObject as? Dictionary<String,AnyObject> {
+                let myresult = dict["value"] as String
+                //Apple will only let you modify UI components on the main event loop
+                // If you do not know if you are on the main thread, you can check it out by doing NSThread.isMainThread()
+                dispatch_sync(dispatch_get_main_queue()) {
+                    self.textViewResults.text=self.textViewResults.text + self.convertBase64ToString(myresult)+"\r\n"
+                }
+            }
+            },failure: {(error: NSError, response: HTTPResponse?) in
+                //println("error: \(error)")
+                // Error
+                let alertController = UIAlertController(title: "Error", message:
+                    "No connection", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+        })
 
+    }
+    
+    func convertStringToBase64(parameter :
+        String)->String{
+        let plainData = parameter.dataUsingEncoding(NSUTF8StringEncoding)
+        let base64String = plainData?.base64EncodedStringWithOptions(.allZeros)
+        return base64String!
+    }
+
+    func convertBase64ToString(parameter: String)->String{
+        let decodedData = NSData(base64EncodedString: parameter, options: .allZeros)
+        let decodedString = NSString(data: decodedData!, encoding: NSUTF8StringEncoding)
+     return decodedString!
+    }
     func parameterInsert(id: String, myValue: String){
         urlTextField.resignFirstResponder()
         portTextField.resignFirstResponder()
@@ -145,5 +210,18 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         return returnString
      }
  }
-
+//let plainString = "r1"
+//
+//let plainData = plainString.dataUsingEncoding(NSUTF8StringEncoding)
+//let base64String = plainData?.base64EncodedStringWithOptions(.allZeros)
+//var result: String = ""
+//result = base64String!
+//println(result)
+//
+//
+//
+//
+//let decodedData = NSData(base64EncodedString: base64String!, options: .allZeros)
+//let decodedString = NSString(data: decodedData!, encoding: NSUTF8StringEncoding)
+//println(decodedString)
 
