@@ -119,7 +119,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="355" width="230" height="150"/>
+                                    <rect key="frame" x="16" y="382" width="230" height="119"/>
                                 </variation>
                             </textView>
                         </subviews>

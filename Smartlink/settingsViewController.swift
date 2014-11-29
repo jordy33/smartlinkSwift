@@ -46,7 +46,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func serverTestButtonTapped(sender: UIButton) {
         var request = HTTPTask()
-//        request.requestSerializer = JSONRequestSerializer()
+        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        auth.persistence = .Permanent
+        request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
         request.GET(urlTextField.text + "greeting", parameters: nil, success: {(response: HTTPResponse) in
                  if let dict = response.responseObject as? Dictionary<String,AnyObject> {
@@ -58,6 +60,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
                     }
             }
             },failure: {(error: NSError, response: HTTPResponse?) in
+                println(response)
                 //println("error: \(error)")
                 // Error
                 let alertController = UIAlertController(title: "Error", message:
@@ -71,6 +74,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         // Enabling notifications
         // 192.1.1.27/gatt/nodes/1/characteristics/handle/23/value
         var request = HTTPTask()
+        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        auth.persistence = .Permanent
+        request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
         let params: Dictionary<String,AnyObject> = ["data": "AQA="]
         request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/21/value", parameters: params, success: {(response: HTTPResponse) in
@@ -90,6 +96,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
     func executeCommand(cmd: String) -> Bool {
         var eval = false
         var request = HTTPTask()
+        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        auth.persistence = .Permanent
+        request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
         let params: Dictionary<String,AnyObject> = ["data": convertStringToBase64(cmd)]
         request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/23/value", parameters: params, success: {(response: HTTPResponse) in
@@ -110,6 +119,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
     
     func retrieveResponse() {
         var request = HTTPTask()
+        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        auth.persistence = .Permanent
+        request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
         request.GET(urlTextField.text + "gatt/nodes/1/characteristics/handle/19", parameters: nil, success: {(response: HTTPResponse) in
             if let dict = response.responseObject as? Dictionary<String,AnyObject> {
