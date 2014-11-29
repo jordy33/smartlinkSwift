@@ -14,19 +14,31 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var urlTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
+    @IBOutlet weak var textFieldUser: UITextField!
+    @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var commandTextField: UITextField!
     @IBOutlet weak var textViewResults: UITextView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         urlTextField.text = parameterRetrieve("url")
         portTextField.text = parameterRetrieve("port")
+        textFieldUser.text = parameterRetrieve("user")
+        textFieldPassword.text = parameterRetrieve("password")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
     @IBAction func hideKeyboard(sender: AnyObject) {
                 commandTextField.resignFirstResponder()
+    }
+    @IBAction func hideKeybForUser(sender: AnyObject) {
+        textFieldUser.resignFirstResponder()
+    }
+    @IBAction func hideKeybForPasswd(sender: UITextField) {
+        textFieldPassword.resignFirstResponder()
     }
     func textFieldShouldReturn(textField: UITextField!) -> Bool {   //delegate method
         urlTextField.resignFirstResponder()
@@ -34,6 +46,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
 
         return true
     }
+
     @IBAction func saveButtonTapped(sender: UIButton) {
         urlTextField.resignFirstResponder()
         parameterDelete("url")
@@ -42,11 +55,17 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         parameterDelete("port")
         parameterInsert("port", myValue: portTextField.text)
         portTextField.text = parameterRetrieve("port")
+        parameterDelete("user")
+        parameterInsert("user", myValue: textFieldUser.text)
+        textFieldUser.text = parameterRetrieve("user")
+        parameterDelete("password")
+        parameterInsert("password", myValue: textFieldPassword.text)
+        textFieldPassword.text = parameterRetrieve("password")
     }
 
     @IBAction func serverTestButtonTapped(sender: UIButton) {
         var request = HTTPTask()
-        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        var auth = HTTPAuth(username: parameterRetrieve("user"), password: parameterRetrieve("password"))
         auth.persistence = .Permanent
         request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
@@ -74,7 +93,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         // Enabling notifications
         // 192.1.1.27/gatt/nodes/1/characteristics/handle/23/value
         var request = HTTPTask()
-        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        var auth = HTTPAuth(username: parameterRetrieve("user"), password: parameterRetrieve("password"))
         auth.persistence = .Permanent
         request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
@@ -96,7 +115,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
     func executeCommand(cmd: String) -> Bool {
         var eval = false
         var request = HTTPTask()
-        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        var auth = HTTPAuth(username: parameterRetrieve("user"), password: parameterRetrieve("password"))
         auth.persistence = .Permanent
         request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
@@ -119,7 +138,7 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
     
     func retrieveResponse() {
         var request = HTTPTask()
-        var auth = HTTPAuth(username: "jordy", password: "trinity")
+        var auth = HTTPAuth(username: parameterRetrieve("user"), password: parameterRetrieve("password"))
         auth.persistence = .Permanent
         request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
