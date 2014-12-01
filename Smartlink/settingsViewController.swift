@@ -69,7 +69,8 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         auth.persistence = .Permanent
         request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
-        request.GET(urlTextField.text + "greeting", parameters: nil, success: {(response: HTTPResponse) in
+        var myUrl:String = urlTextField.text + ":" + portTextField.text + "/" + "greeting"
+        request.GET(myUrl, parameters: nil, success: {(response: HTTPResponse) in
                  if let dict = response.responseObject as? Dictionary<String,AnyObject> {
                     let myresult = dict["id"] as String
                     //Apple will only let you modify UI components on the main event loop
@@ -97,8 +98,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         auth.persistence = .Permanent
         request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
+        var myUrl:String = urlTextField.text + ":" + portTextField.text + "/" + "gatt/nodes/1/characteristics/handle/21/value"
         let params: Dictionary<String,AnyObject> = ["data": "AQA="]
-        request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/21/value", parameters: params, success: {(response: HTTPResponse) in
+        request.PUT(myUrl, parameters: params, success: {(response: HTTPResponse) in
             dispatch_sync(dispatch_get_main_queue()) {
                 self.textViewResults.text=self.textViewResults.text + "notification enabled"+"\r\n"
                 var res = self.executeCommand(self.commandTextField.text)
@@ -119,8 +121,9 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         auth.persistence = .Permanent
         request.auth = auth
         //we have to add the explicit type, else the wrong type is inferred. See the vluxe.io article for more info.
+        var myUrl:String = urlTextField.text + ":" + portTextField.text + "/" + "gatt/nodes/1/characteristics/handle/23/value"
         let params: Dictionary<String,AnyObject> = ["data": convertStringToBase64(cmd)]
-        request.PUT(urlTextField.text + "gatt/nodes/1/characteristics/handle/23/value", parameters: params, success: {(response: HTTPResponse) in
+        request.PUT(myUrl, parameters: params, success: {(response: HTTPResponse) in
             dispatch_sync(dispatch_get_main_queue()) {
                 self.retrieveResponse()
                 eval = true
@@ -142,7 +145,8 @@ class settingsViewController: UIViewController, UITextFieldDelegate {
         auth.persistence = .Permanent
         request.auth = auth
         request.responseSerializer = JSONResponseSerializer()
-        request.GET(urlTextField.text + "gatt/nodes/1/characteristics/handle/19", parameters: nil, success: {(response: HTTPResponse) in
+        var myUrl:String = urlTextField.text + ":" + portTextField.text + "/" + "gatt/nodes/1/characteristics/handle/19"
+        request.GET(myUrl, parameters: nil, success: {(response: HTTPResponse) in
             if let dict = response.responseObject as? Dictionary<String,AnyObject> {
                 let myresult = dict["value"] as String
                 //Apple will only let you modify UI components on the main event loop
